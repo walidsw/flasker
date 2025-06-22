@@ -1,27 +1,31 @@
-<!DOCTYPE html>
-<title> RUETIANS MANGO</title>
+{% extends 'base.html' %}
+{% block content %}
 
-<body>
-    <p>
-        <h1>RUETIANS LOVE {{fruit}}</h1>
-    </p>
-    <p>
-        We ARE THE RUETIANS LOVE TO EAT MANGO.
-    </p>
-    <p>
-        WE SELL MANGO EAT MANGO AND SLEEP WITH MANGO.
-    </p>
+{% for message in get_flashed_messages() %}
 
-    <p>
-        </p><br>
-        WE LOVE TO EAT THESE:::
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
 
-        {% for i in food %}
-            <br>{{ i }}
-        {% endfor %}
+{% endfor %}
 
-    </p>
+<p>
+    <img src="{{ url_for('static', filename='images/mango_bar_big.png') }}" alt="HI" width="850"  class="d-block mx-auto">
+</p>
 
-</body>
+<p>
+    <div class="text-center my-2">
+        <h1 style="font-size: 35px;" class="font-weight-bold text-success">
+            Mango Mango – Where Code Meets Curry<br>
+            and Comments Get Juicy!
+        </h1>
+    </div>
+    <br>
+    <img src="{{ url_for('static', filename='images/mango2.png') }}" alt="Mango_Pic" height="200"  class="d-block mx-auto">    
+</p>
 
-</html>
+
+{% endblock %}

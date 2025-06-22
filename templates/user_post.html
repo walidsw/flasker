@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% for message in get_flashed_messages() %}
+
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+{% endfor %}
+
+
+{% if flag %}
+    <!-- if post added -->
+     <h1>POST ADDED 😊</h1>
+{% else %}
+<div class="container mt-5">
+  <div class="card shadow-lg rounded-4">
+    <div class="card-header bg-success text-white text-center">
+      <h3 class="mb-0">📝 Submit a Blog Post</h3>
+    </div>
+    <div class="card-body">
+      <form method="POST">
+        {{ form.hidden_tag() }}
+
+        <div class="mb-4">
+          {{ form.title.label(class="form-label fw-semibold") }}
+          {{ form.title(class="form-control form-control-lg", placeholder="Enter your blog title") }}
+        </div>
+
+        <div class="mb-4">
+          {{ form.content.label(class="form-label fw-semibold") }}
+          {{ form.content(class="form-control", rows="7", placeholder="Write your blog content here...") }}
+        </div>
+
+        <div class="text-center">
+          {{ form.submit(class="btn btn-success px-5 py-2") }}
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+
+{% endblock %}

@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+  .golden-cage {
+    background: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
+    border: 2px solid #e2b76c;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease-in-out;
+    padding: 20px;
+    margin-bottom: 30px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .golden-cage:hover {
+    transform: scale(1.01);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+  }
+
+  .blog-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #0719e9;
+  }
+
+  .blog-meta {
+    font-size: 1rem;
+    color: #13a4e7;
+    margin-top: 10px;
+  }
+
+  .blog-content {
+    margin-top: 15px;
+    font-size: 1.20rem;
+    color: #333;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    /* max-height: 300px; */
+    overflow-y: auto;
+  }
+
+  .highlight-border {
+    height: 5px;
+    width: 60px;
+    background-color: #e2b76c;
+    border-radius: 10px;
+    margin-bottom: 15px;
+  }
+
+  .comment-box {
+    background-color: #fff8e1;
+    border-left: 4px solid #ffc107;
+    padding: 10px 15px;
+    margin-top: 15px;
+    border-radius: 10px;
+  }
+
+  .comment-form textarea {
+    resize: none;
+  }
+</style>
+
+<div class="container mt-5 mb-5">
+  <h2 class="text-center fw-bold mb-4" style="color: #2357d8;">📝 All Blog Posts</h2>
+
+  {% for blog, user in blogs %}
+    <div class="golden-cage">
+      <div class="highlight-border"></div>
+      <div class="blog-title">{{ blog.blog_title }}</div>
+
+      <div class="blog-content">{{ blog.blog_content }}</div>
+
+      <div class="blog-meta">
+        👤 <strong>{{ user.email }}</strong><br>
+        ⏰ {{ blog.date_added.strftime('%b %d, %Y %I:%M %p') }}
+      </div>
+
+
+
+      <!-- Example Comment Display -->
+      <div class="mt-3">
+        <h5 class="fw-bold" style="color: #b405e9;">💬 Comments</h5>
+        {% for comment, commenter in all_comments %}
+          {% if comment.blog_id == blog.blog_id %}
+            <div class="comment-box">
+              <small><strong>{{ commenter.email }}</strong> on {{ comment.date_posted.strftime('%b %d, %Y %I:%M %p') }}</small>
+              <div>{{ comment.content }}</div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      <!-- Comment Form -->
+      {% if current_user.is_authenticated %}
+        <form method="POST" class="mt-3 comment-form">
+          {{ form.hidden_tag() }}
+          <input type="hidden" name="blog_id" value="{{ blog.blog_id }}">
+          <div class="mb-2">
+            {{ form.content(class="form-control", rows="2", placeholder="Write a comment...") }}
+          </div>
+          {{ form.submit(class="btn btn-sm btn-outline-primary") }}
+        </form>
+      {% else %}
+        <p class="text-muted mt-2">🔐 <a href="{{ url_for('login') }}">Login</a> to comment.</p>
+      {% endif %}
+
+      {% if current_user.is_authenticated and current_user.id == blog.user_id %}
+        <form method="POST" action="{{ url_for('delete_blog', blog_id=blog.blog_id) }}" class="mt-3">
+          <button type="submit" class="btn btn-danger btn-sm"
+            onclick="return confirm('Are you sure you want to delete this post?');">
+            Delete  <i class="fa-solid fa-trash-can"></i>
+          </button>
+        </form>
+      {% endif %}
+
+
+    </div>
+
+
+
+
+  {% else %}
+    <div class="alert alert-warning text-center">
+      🚫 No blog posts found.
+    </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

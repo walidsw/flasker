@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+  <h2 class="mb-4">🧑‍💻 Your Profile</h2>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  <div class="row">
+    <!-- Profile Image -->
+    <div class="col-md-4 text-center mb-3">
+      <img src="{{ url_for('static', filename='profile_pics/' + profile.profile_pic) }}"
+           class="img-thumbnail rounded-circle shadow" width="200" height="200" alt="Profile Picture">
+    </div>
+
+    <!-- Profile Form -->
+    <div class="col-md-8">
+      <form method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+
+        <div class="mb-3">
+          {{ form.name.label(class="form-label") }}
+          {{ form.name(class="form-control", value=user.name) }}
+        </div>
+
+        <div class="mb-3">
+          {{ form.email.label(class="form-label") }}
+          {{ form.email(class="form-control", value=user.email) }}
+        </div>
+
+        <div class="mb-3">
+          {{ form.profile_pic.label(class="form-label") }}
+          {{ form.profile_pic(class="form-control") }}
+          <small class="form-text text-muted">Allowed types: jpg, jpeg, png, gif</small>
+        </div>
+
+        <div class="mb-3">
+          {{ form.submit(class="btn btn-warning fw-bold") }}
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

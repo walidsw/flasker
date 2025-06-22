@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% if flag %}
+    
+    <img src="{{ url_for('static', filename='images/hi.png') }}" alt="HI">
+    <h1 style="font-family: 'Arial Black', Gadget, sans-serif; font-size: 32px; padding-left: 250px;">
+        User with email: {{ email }}<br> added successfully !!
+    </h1>
+
+
+{% else %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow">
+        <div class="card-header bg-success text-white text-center">
+          <h4>SignUp to Mango Mango</h4>
+        </div>
+        <div class="card-body">
+          <form method="POST">
+              {{ form.hidden_tag() }}
+
+              <div class="form-group">
+                {{ form.name.label(class="form-label") }}
+                {{ form.name(class="form-control") }}
+              </div>
+
+              <div class="form-group">
+                {{ form.email.label(class="form-label") }}
+                {{ form.email(class="form-control") }}
+              </div>
+
+              <div class="form-group">
+                {{ form.password.label(class="form-label") }}
+                {{ form.password(class="form-control") }}
+              </div>
+
+              <div class="text-center">
+                {{ form.submit(class="btn btn-info btn-lg") }}
+              </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% endblock %}
